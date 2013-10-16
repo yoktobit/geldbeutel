@@ -8,6 +8,7 @@ int main(int argc, char *argv[])
     QtQuick2ApplicationViewer viewer;
     viewer.setMainQmlFile(QStringLiteral("qml/geldbeutel/main.qml"));
     viewer.showExpanded();
+    viewer.setTitle("Geldbeutel");
 
     return app.exec();
 }
