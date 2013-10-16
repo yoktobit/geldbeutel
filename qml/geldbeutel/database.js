@@ -38,6 +38,7 @@ function selectAccounts()
             // Show all accounts
             var rs = tx.executeSql('SELECT name, type FROM account');
             var r = "";
+            accounts.clear();
             for(var i = 0; i < rs.rows.length; i++) {
                 console.log(rs.rows.item(i));
                 console.log(rs.rows.item(i).name);
