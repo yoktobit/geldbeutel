@@ -15,15 +15,22 @@ Item {
         Database.openDatabase();
     }
 
+    property alias account_ref: accounts
+
+    ListModel {
+        id: accounts
+    }
+    ListModel {
+        id: transactions
+    }
+
     TabView {
         anchors.fill: parent
         AccountView {
             id: accountView
         }
-
-        Tab {
-            id: tabTransactions
-            title: qsTr("Transactions", "Transactions as Tab name")
+        TransactionView {
+            id: transactionView
         }
     }
 

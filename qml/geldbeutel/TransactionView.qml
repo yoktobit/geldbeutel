@@ -5,31 +5,32 @@ import QtQuick.Layouts 1.0
 import "database.js" as Database
 
 Tab {
-    id: tabAccounts
-    title: qsTr("Accounts", "Accounts as Tab name")
+    id: tabTransactions
+    title: qsTr("Transactions", "Transactions as Tab name")
+
     GridLayout {
-        id: tabAccountGrid
         anchors.fill: parent
         columns: 1
         rows: 2
         Action {
-            id: newAccountAction
+            id: newTransactionAction
             onTriggered: {
-                accountDetailWindow.account = null;
-                accountDetailWindow.accounts = accounts;
-                accountDetailWindow.show();
+                transactionDetailWindow.transaction = null;
+                transactionDetailWindow.transactions = transactions;
+                transactionDetailWindow.show();
+                console.log(mainWindow.account_ref.get(0));
             }
         }
         Action {
-            id: editAccountAction
+            id: editTransactionAction
             onTriggered: {
-                accountDetailWindow.account = accounts.get(tableAccounts.currentRow);
-                accountDetailWindow.accounts = accounts;
-                accountDetailWindow.show();
+                transactionDetailWindow.transaction = transactions.get(tableTransactions.currentRow);
+                transactionDetailWindow.transactions = transactions;
+                transactionDetailWindow.show();
             }
         }
-        AccountDetailWindow {
-            id: accountDetailWindow
+        TransactionDetailWindow {
+            id: transactionDetailWindow
         }
         ToolBar {
             id: toolbarMain
@@ -37,14 +38,14 @@ Tab {
             Layout.fillWidth: true
             Row {
                 ToolButton {
-                    action: newAccountAction
+                    action: newTransactionAction
                     Text {
                         anchors.centerIn: parent
                         text: "New"
                     }
                 }
                 ToolButton {
-                    action: editAccountAction
+                    action: editTransactionAction
                     Text {
                         anchors.centerIn: parent
                         text: "Edit"
@@ -53,8 +54,8 @@ Tab {
             }
         }
         TableView {
-            id: tableAccounts
-            model: accounts
+            id: tableTransactions
+            model: transactions
             width: parent.width
             Layout.fillHeight: true
             Layout.fillWidth: true
@@ -65,14 +66,20 @@ Tab {
                 width: parent.width / 5
             }
             TableViewColumn {
-                id: colType
-                title: "Type"
-                role: "type"
+                id: colAccount
+                title: "Account"
+                role: "accountname"
+                width: parent.width / 5
+            }
+            TableViewColumn {
+                id: colValue
+                title: "Value"
+                role: "value"
                 width: parent.width / 5
             }
         }
         Component.onCompleted: {
-            Database.selectAccounts(accounts);
+            Database.selectTransactions(transactions);
         }
     }
 }
