@@ -17,6 +17,7 @@ Window {
         {
             transaction = {name: transactionName.text
                 , account: transactionAccount.model.get(transactionAccount.currentIndex).id
+                , accountname: transactionAccount.model.get(transactionAccount.currentIndex).name
                 , value: transactionValue.text * 1};
             console.log("account: " + transaction.account);
             Database.insertTransaction(transaction);

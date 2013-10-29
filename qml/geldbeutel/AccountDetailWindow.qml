@@ -27,8 +27,43 @@ Window {
         }
     }
 
+    function loadAccount(a)
+    {
+        if (a === null)
+        {
+            updateAccountWindow.account = a;
+            accountName.text = "Girokonto";
+            accountType.currentIndex = 0;
+        }
+        else
+        {
+            updateAccountWindow.account = a;
+            accountName.text = a.name;
+            var index = 0;
+            for (index = 0; index < typeModel.count; index++)
+            {
+                if (typeModel.get(index).name === a.type)
+                {
+                    console.log("index = " + index);
+                    break;
+                }
+            }
+            accountType.currentIndex = index;
+        }
+    }
+
     property var account
     property var accounts
+
+    ListModel {
+        id: typeModel
+        ListElement {
+            name: "giro"
+        }
+        ListElement {
+            name: "credit"
+        }
+    }
 
     GridLayout {
         id: gridLayout
@@ -59,7 +94,8 @@ Window {
             Layout.row: 1
             Layout.column: 1
             Layout.fillWidth: true
-            model: ["giro", "credit"]
+            model: typeModel
+            textRole: "name"
         }
 
         Row {

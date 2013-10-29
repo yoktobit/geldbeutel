@@ -15,7 +15,7 @@ Tab {
         Action {
             id: newAccountAction
             onTriggered: {
-                accountDetailWindow.account = null;
+                accountDetailWindow.loadAccount(null);
                 accountDetailWindow.accounts = accounts;
                 accountDetailWindow.show();
             }
@@ -23,9 +23,16 @@ Tab {
         Action {
             id: editAccountAction
             onTriggered: {
-                accountDetailWindow.account = accounts.get(tableAccounts.currentRow);
+                accountDetailWindow.loadAccount(accounts.get(tableAccounts.currentRow));
                 accountDetailWindow.accounts = accounts;
                 accountDetailWindow.show();
+            }
+        }
+        Action {
+            id: deleteAccountAction
+            onTriggered: {
+                var account = accounts.get(tableAccounts.currentRow);
+                Database.deleteAccount(account);
             }
         }
         AccountDetailWindow {
@@ -48,6 +55,13 @@ Tab {
                     Text {
                         anchors.centerIn: parent
                         text: "Edit"
+                    }
+                }
+                ToolButton {
+                    action: deleteAccountAction
+                    Text {
+                        anchors.centerIn: parent
+                        text: "Delete"
                     }
                 }
             }

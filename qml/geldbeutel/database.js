@@ -65,6 +65,19 @@ function updateAccount(account)
     );
 }
 
+function deleteAccount(account)
+{
+    var update = "DELETE FROM account WHERE id = ?";
+    var data = [
+        account.id
+    ];
+    database.transaction(
+        function(tx) {
+            tx.executeSql(update, data);
+        }
+    );
+}
+
 function selectAccounts(accounts)
 {
     if (!database)
@@ -116,6 +129,19 @@ function updateTransaction(transaction)
     database.transaction(
         function(tx) {
             tx.executeSql(insert, data);
+        }
+    );
+}
+
+function deleteTransaction(transaction)
+{
+    var update = "DELETE FROM transfer WHERE id = ?";
+    var data = [
+        transaction.id
+    ];
+    database.transaction(
+        function(tx) {
+            tx.executeSql(update, data);
         }
     );
 }

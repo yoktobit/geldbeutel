@@ -29,6 +29,15 @@ Tab {
                 transactionDetailWindow.show();
             }
         }
+        Action {
+            id: deleteTransactionAction
+            onTriggered: {
+                var transaction = transactions.get(tableTransactions.currentRow);
+                console.log("deleting transaction id " + transaction.id);
+                Database.deleteTransaction(transaction);
+                transactions.remove(tableTransactions.currentRow);
+            }
+        }
         TransactionDetailWindow {
             id: transactionDetailWindow
         }
@@ -49,6 +58,13 @@ Tab {
                     Text {
                         anchors.centerIn: parent
                         text: "Edit"
+                    }
+                }
+                ToolButton {
+                    action: deleteTransactionAction
+                    Text {
+                        anchors.centerIn: parent
+                        text: "Delete"
                     }
                 }
             }
