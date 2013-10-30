@@ -6,7 +6,7 @@ import "database.js" as Database
 
 Tab {
     id: tabAccounts
-    title: qsTr("Accounts", "Accounts as Tab name")
+    title: qsTr("Konten", "Konten als Tab name")
     GridLayout {
         id: tabAccountGrid
         anchors.fill: parent
@@ -45,23 +45,29 @@ Tab {
             Row {
                 ToolButton {
                     action: newAccountAction
+                    width: newAccountText.width + 30
                     Text {
+                        id: newAccountText
                         anchors.centerIn: parent
-                        text: "New"
+                        text: "Neu"
                     }
                 }
                 ToolButton {
                     action: editAccountAction
+                    width: editAccountText.width + 30
                     Text {
+                        id: editAccountText
                         anchors.centerIn: parent
-                        text: "Edit"
+                        text: "Bearbeiten"
                     }
                 }
                 ToolButton {
                     action: deleteAccountAction
+                    width: deleteAccountText.width + 30
                     Text {
+                        id: deleteAccountText
                         anchors.centerIn: parent
-                        text: "Delete"
+                        text: "Löschen"
                     }
                 }
             }
@@ -80,8 +86,14 @@ Tab {
             }
             TableViewColumn {
                 id: colType
-                title: "Type"
+                title: "Art"
                 role: "type"
+                width: parent.width / 5
+            }
+            TableViewColumn {
+                id: colStand
+                title: "Stand"
+                role: "stand"
                 width: parent.width / 5
             }
         }

@@ -6,7 +6,7 @@ import "database.js" as Database
 
 Tab {
     id: tabTransactions
-    title: qsTr("Transactions", "Transactions as Tab name")
+    title: qsTr("Transaktionen", "Transaktionen als Tab name")
 
     GridLayout {
         anchors.fill: parent
@@ -24,7 +24,7 @@ Tab {
         Action {
             id: editTransactionAction
             onTriggered: {
-                transactionDetailWindow.transaction = transactions.get(tableTransactions.currentRow);
+                transactionDetailWindow.loadTransaction(transactions.get(tableTransactions.currentRow));
                 transactionDetailWindow.transactions = transactions;
                 transactionDetailWindow.show();
             }
@@ -40,6 +40,7 @@ Tab {
         }
         TransactionDetailWindow {
             id: transactionDetailWindow
+            accounts: mainWindow.account_ref
         }
         ToolBar {
             id: toolbarMain
@@ -48,23 +49,29 @@ Tab {
             Row {
                 ToolButton {
                     action: newTransactionAction
+                    width: newTransactionText.width + 30
                     Text {
+                        id: newTransactionText
                         anchors.centerIn: parent
-                        text: "New"
+                        text: "Neu"
                     }
                 }
                 ToolButton {
                     action: editTransactionAction
+                    width: editTransactionText.width + 30
                     Text {
+                        id: editTransactionText
                         anchors.centerIn: parent
-                        text: "Edit"
+                        text: "Bearbeiten"
                     }
                 }
                 ToolButton {
                     action: deleteTransactionAction
+                    width: deleteTransactionText.width + 30
                     Text {
+                        id: deleteTransactionText
                         anchors.centerIn: parent
-                        text: "Delete"
+                        text: "Löschen"
                     }
                 }
             }
@@ -83,13 +90,13 @@ Tab {
             }
             TableViewColumn {
                 id: colAccount
-                title: "Account"
+                title: "Konto"
                 role: "accountname"
                 width: parent.width / 5
             }
             TableViewColumn {
                 id: colValue
-                title: "Value"
+                title: "Betrag"
                 role: "value"
                 width: parent.width / 5
             }

@@ -23,10 +23,9 @@ function openDatabase() {
             tx.executeSql("CREATE TABLE IF NOT EXISTS transfer(id INTEGER PRIMARY KEY AUTOINCREMENT"
                           + ", name TEXT"
                           + ", account INTEGER"
-                          + ", value NUMBER"
+                          + ", value NUMBER(10,2)"
                           + ", insertdate DATETIME"
                           + ", updatedate DATETIME)");
-            //tx.executeSql("DELETE FROM account");
         }
     );
 }
@@ -44,7 +43,8 @@ function insertAccount(account)
     ];
     database.transaction(
         function(tx) {
-            tx.executeSql(insert, data);
+            var res = tx.executeSql(insert, data);
+            account.id = res.insertId;
         }
     );
 }
@@ -87,13 +87,13 @@ function selectAccounts(accounts)
     database.transaction(
         function(tx) {
             // Show all accounts
-            var rs = tx.executeSql('SELECT id, name, type FROM account');
+            var rs = tx.executeSql('SELECT id, name, type, (SELECT sum(value) from transfer where transfer.account = account.id) stand FROM account');
             var r = "";
             accounts.clear();
             for(var i = 0; i < rs.rows.length; i++) {
                 console.log(rs.rows.item(i));
                 console.log(rs.rows.item(i).name);
-                accounts.append({"id": rs.rows.item(i).id, "name": rs.rows.item(i).name, "type": rs.rows.item(i).type});
+                accounts.append({"id": rs.rows.item(i).id, "name": rs.rows.item(i).name, "type": rs.rows.item(i).type, "stand": rs.rows.item(i).stand});
             }
         }
     );
@@ -109,9 +109,11 @@ function insertTransaction(transaction)
         new Date(),
         new Date()
     ];
+    console.log(transaction.value);
     database.transaction(
         function(tx) {
-            tx.executeSql(insert, data);
+            var res = tx.executeSql(insert, data);
+            transaction.id = res.insertId;
         }
     );
 }
@@ -169,4 +171,16 @@ function selectTransactions(transactions)
             }
         }
     );
+}
+
+function getIndexById(list, id)
+{
+    for (var ii = 0; ii < list.count; ii++)
+    {
+        if (list.get(ii).id === id)
+        {
+            return ii;
+        }
+    }
+    return -1;
 }

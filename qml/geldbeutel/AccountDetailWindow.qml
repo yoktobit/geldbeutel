@@ -9,7 +9,7 @@ Window {
     modality: Qt.ApplicationModal
     width: gridLayout.width
     height: gridLayout.height
-    title: "Account"
+    title: "Konto"
 
     function save()
     {
@@ -59,9 +59,11 @@ Window {
         id: typeModel
         ListElement {
             name: "giro"
+            desc: "Giro"
         }
         ListElement {
             name: "credit"
+            desc: "Kredit"
         }
     }
 
@@ -87,7 +89,7 @@ Window {
             Layout.row: 1
             Layout.column: 0
             width: parent.width
-            text: "Type"
+            text: "Art"
         }
         ComboBox {
             id: accountType
@@ -95,7 +97,7 @@ Window {
             Layout.column: 1
             Layout.fillWidth: true
             model: typeModel
-            textRole: "name"
+            textRole: "desc"
         }
 
         Row {
@@ -111,7 +113,7 @@ Window {
                 }
             }
             Button {
-                text: "Abort"
+                text: "Abbrechen"
                 onClicked: {
                     close();
                 }

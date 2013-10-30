@@ -9,7 +9,7 @@ Window {
     modality: Qt.ApplicationModal
     width: gridLayout.width
     height: gridLayout.height
-    title: "Transaction"
+    title: "Transaktion"
 
     function save()
     {
@@ -18,18 +18,38 @@ Window {
             transaction = {name: transactionName.text
                 , account: transactionAccount.model.get(transactionAccount.currentIndex).id
                 , accountname: transactionAccount.model.get(transactionAccount.currentIndex).name
-                , value: transactionValue.text * 1};
+                , value: transactionValue.value};
             console.log("account: " + transaction.account);
             Database.insertTransaction(transaction);
             transactions.append(transaction);
+            Database.selectAccounts(accounts);
         }
         else
         {
             transaction.name = transactionName.text;
             transaction.account = transactionAccount.model.get(transactionAccount.currentIndex).id;
-            transaction.value = transactionValue.text * 1;
+            transaction.accountname = transactionAccount.model.get(transactionAccount.currentIndex).name;
+            transaction.value = transactionValue.value;
             console.log("account: " + transaction.account);
             Database.updateTransaction(transaction);
+            Database.selectAccounts(accounts);
+        }
+    }
+
+    function loadTransaction(transaction)
+    {
+        updateTransactionWindow.transaction = transaction;
+        if (transaction === null)
+        {
+            transactionName.text = "Girokonto";
+            transactionAccount.currentIndex = 0;
+            transactionValue.value = 1.00;
+        }
+        else
+        {
+            transactionName.text = transaction.name;
+            transactionAccount.currentIndex = Database.getIndexById(accounts, transaction.account);
+            transactionValue.value = transaction.value;
         }
     }
 
@@ -59,7 +79,7 @@ Window {
             Layout.row: 1
             Layout.column: 0
             width: parent.width
-            text: "Account"
+            text: "Konto"
         }
         ComboBox {
             id: transactionAccount
@@ -72,15 +92,16 @@ Window {
         Text {
             Layout.row: 2
             Layout.column: 0
-            text: "value"
+            text: "Betrag"
         }
-        TextField {
+        SpinBox {
             id: transactionValue
             Layout.row: 2
             Layout.column: 1
             Layout.fillWidth: true
-            text: "1.00"
-            validator: DoubleValidator { }
+            value: 1.00
+            decimals: 2
+            maximumValue: 99999999
         }
 
         Row {
@@ -96,7 +117,7 @@ Window {
                 }
             }
             Button {
-                text: "Abort"
+                text: "Abbrechen"
                 onClicked: {
                     close();
                 }
