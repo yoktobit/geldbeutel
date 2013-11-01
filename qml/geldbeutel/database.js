@@ -87,7 +87,11 @@ function selectAccounts(accounts)
     database.transaction(
         function(tx) {
             // Show all accounts
-            var rs = tx.executeSql('SELECT id, name, type, (SELECT sum(value) from transfer where transfer.account = account.id) stand FROM account');
+            var rs = tx.executeSql("select * from (SELECT id, name, type, '1' as ord \
+                , (SELECT sum(value) from transfer where transfer.account = account.id) stand \
+                FROM account \
+                union select -1, \'Gesamt\', \'sum\', '2' as ord \
+                      , (SELECT sum(value) from transfer) stand) order by ord");
             var r = "";
             accounts.clear();
             for(var i = 0; i < rs.rows.length; i++) {

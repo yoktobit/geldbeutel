@@ -19,6 +19,7 @@ Tab {
                 transactionDetailWindow.transactions = transactions;
                 transactionDetailWindow.show();
                 console.log(mainWindow.account_ref.get(0));
+                Database.selectAccounts(mainWindow.account_ref);
             }
         }
         Action {
@@ -27,6 +28,7 @@ Tab {
                 transactionDetailWindow.loadTransaction(transactions.get(tableTransactions.currentRow));
                 transactionDetailWindow.transactions = transactions;
                 transactionDetailWindow.show();
+                Database.selectAccounts(mainWindow.account_ref);
             }
         }
         Action {
@@ -36,6 +38,7 @@ Tab {
                 console.log("deleting transaction id " + transaction.id);
                 Database.deleteTransaction(transaction);
                 transactions.remove(tableTransactions.currentRow);
+                Database.selectAccounts(mainWindow.account_ref);
             }
         }
         TransactionDetailWindow {
